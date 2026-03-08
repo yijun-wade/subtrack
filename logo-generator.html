@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Logo Generator</title></head>
+<body style="background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:20px">
+
+<div style="display:flex;gap:40px">
+  <!-- Dark -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <p style="color:#fff;font-size:14px;margin:0">다크 버전</p>
+    <canvas id="dark" width="600" height="600" style="width:200px;height:200px;border-radius:40px;box-shadow:0 0 40px rgba(0,0,0,0.5)"></canvas>
+    <button onclick="dl('dark','subtrack-logo-dark.png')" style="padding:10px 24px;font-size:14px;background:#ff6b6b;color:white;border:none;border-radius:10px;cursor:pointer">다크 다운로드</button>
+  </div>
+
+  <!-- Light -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <p style="color:#fff;font-size:14px;margin:0">라이트 버전</p>
+    <canvas id="light" width="600" height="600" style="width:200px;height:200px;border-radius:40px;box-shadow:0 0 40px rgba(0,0,0,0.3)"></canvas>
+    <button onclick="dl('light','subtrack-logo-light.png')" style="padding:10px 24px;font-size:14px;background:#ff6b6b;color:white;border:none;border-radius:10px;cursor:pointer">라이트 다운로드</button>
+  </div>
+</div>
+
+<script>
+function drawDark(id) {
+  const c = document.getElementById(id)
+  const ctx = c.getContext('2d')
+  const grad = ctx.createLinearGradient(0, 0, 600, 600)
+  grad.addColorStop(0, '#1a1f2e')
+  grad.addColorStop(1, '#0f1318')
+  ctx.fillStyle = grad
+  ctx.roundRect(0, 0, 600, 600, 80)
+  ctx.fill()
+  const glow = ctx.createRadialGradient(300, 280, 0, 300, 280, 220)
+  glow.addColorStop(0, 'rgba(255,107,107,0.15)')
+  glow.addColorStop(1, 'rgba(255,107,107,0)')
+  ctx.fillStyle = glow
+  ctx.fillRect(0, 0, 600, 600)
+  ctx.font = '180px serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('💸', 300, 240)
+  ctx.fillStyle = '#ffffff'
+  ctx.font = 'bold 64px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('숨만쉬어도', 300, 400)
+  ctx.fillStyle = '#ff6b6b'
+  ctx.font = 'bold 30px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('매달 새는 돈 알림', 300, 468)
+}
+
+function drawLight(id) {
+  const c = document.getElementById(id)
+  const ctx = c.getContext('2d')
+  ctx.fillStyle = '#ffffff'
+  ctx.roundRect(0, 0, 600, 600, 80)
+  ctx.fill()
+  const glow = ctx.createRadialGradient(300, 280, 0, 300, 280, 220)
+  glow.addColorStop(0, 'rgba(255,107,107,0.08)')
+  glow.addColorStop(1, 'rgba(255,107,107,0)')
+  ctx.fillStyle = glow
+  ctx.fillRect(0, 0, 600, 600)
+  ctx.font = '180px serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('💸', 300, 240)
+  ctx.fillStyle = '#1a1f2e'
+  ctx.font = 'bold 64px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('숨만쉬어도', 300, 400)
+  ctx.fillStyle = '#ff6b6b'
+  ctx.font = 'bold 30px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('매달 새는 돈 알림', 300, 468)
+}
+
+function dl(id, filename) {
+  const link = document.createElement('a')
+  link.download = filename
+  link.href = document.getElementById(id).toDataURL('image/png')
+  link.click()
+}
+
+drawDark('dark')
+drawLight('light')
+</script>
+</body>
+</html>

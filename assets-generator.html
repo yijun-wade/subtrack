@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Assets Generator</title>
+<style>
+  body { background:#111; color:#fff; font-family:sans-serif; padding:40px; display:flex; flex-direction:column; align-items:center; gap:40px; }
+  .section { display:flex; flex-direction:column; align-items:center; gap:12px; }
+  h2 { margin:0; font-size:14px; color:#aaa; }
+  button { padding:10px 24px; font-size:14px; background:#ff6b6b; color:white; border:none; border-radius:10px; cursor:pointer; }
+  canvas { max-width:100%; height:auto; border-radius:12px; }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <h2>가로형 썸네일 (1932×828) — 앱스토어 배너</h2>
+  <canvas id="banner" width="1932" height="828" style="width:700px"></canvas>
+  <button onclick="dl('banner','thumbnail-1932x828.png')">썸네일 다운로드</button>
+</div>
+
+<div class="section">
+  <h2>스크린샷 세로형 (636×1048) — 3장</h2>
+  <div style="display:flex;gap:16px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+      <canvas id="ss1" width="636" height="1048" style="width:180px"></canvas>
+      <button onclick="dl('ss1','screenshot-1.png')">1장 다운로드</button>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+      <canvas id="ss2" width="636" height="1048" style="width:180px"></canvas>
+      <button onclick="dl('ss2','screenshot-2.png')">2장 다운로드</button>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+      <canvas id="ss3" width="636" height="1048" style="width:180px"></canvas>
+      <button onclick="dl('ss3','screenshot-3.png')">3장 다운로드</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function bg(ctx, w, h) {
+  const grad = ctx.createLinearGradient(0, 0, w, h)
+  grad.addColorStop(0, '#1a1f2e')
+  grad.addColorStop(1, '#0f1318')
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, w, h)
+}
+
+// Banner 1932x828
+function drawBanner() {
+  const c = document.getElementById('banner')
+  const ctx = c.getContext('2d')
+  bg(ctx, 1932, 828)
+
+  // Left side - big emoji
+  ctx.font = '320px serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('💸', 420, 414)
+
+  // Right side - text
+  ctx.textAlign = 'left'
+  ctx.fillStyle = '#aab4c8'
+  ctx.font = '44px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('매달 나가는 돈, 알고 계신가요?', 720, 270)
+
+  ctx.fillStyle = '#ffffff'
+  ctx.font = 'bold 100px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('숨만쉬어도', 720, 390)
+
+  ctx.fillStyle = '#ff6b6b'
+  ctx.font = 'bold 56px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('1년이면 수십만원이 그냥 사라져요', 720, 510)
+
+  // Divider line
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)'
+  ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.moveTo(680, 200)
+  ctx.lineTo(680, 630)
+  ctx.stroke()
+}
+
+// Screenshot 1: 메인 화면
+function drawSS1() {
+  const c = document.getElementById('ss1')
+  const ctx = c.getContext('2d')
+  bg(ctx, 636, 1048)
+
+  ctx.textAlign = 'center'
+
+  // Title
+  ctx.fillStyle = '#aab4c8'
+  ctx.font = '28px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('내 구독 한눈에 보기', 318, 100)
+
+  ctx.fillStyle = '#ffffff'
+  ctx.font = 'bold 52px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('숨만쉬어도 💸', 318, 170)
+
+  // Summary card
+  ctx.fillStyle = '#191f28'
+  roundRect(ctx, 40, 220, 556, 260, 24)
+
+  ctx.fillStyle = '#aab4c8'
+  ctx.font = '26px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('이번 달 총 지출', 318, 270)
+
+  ctx.fillStyle = '#ffffff'
+  ctx.font = 'bold 44px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('68,300원 / 월', 318, 330)
+
+  ctx.fillStyle = 'rgba(255,255,255,0.2)'
+  ctx.fillRect(80, 355, 476, 1)
+
+  ctx.fillStyle = '#aab4c8'
+  ctx.font = '24px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('1년이면', 318, 395)
+
+  ctx.fillStyle = '#ff6b6b'
+  ctx.font = 'bold 64px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('819,600원', 318, 460)
+
+  // Subtitle
+  ctx.fillStyle = '#aab4c8'
+  ctx.font = '28px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('지금 당장 정신 차려야 해요 🫠', 318, 540)
+
+  // Cards
+  drawMiniCard(ctx, 40, 590, '넷플릭스 🎬', '13,500원', 'D-12', '#ff6b6b')
+  drawMiniCard(ctx, 40, 690, '유튜브 프리미엄 ▶️', '14,900원', 'D-3', '#ffb347')
+  drawMiniCard(ctx, 40, 790, 'ChatGPT Plus 🤖', '27,000원', '매월', '#8ecfff')
+  drawMiniCard(ctx, 40, 890, '쿠팡 로켓와우 🛍️', '7,890원', 'D-21', '#aab4c8')
+}
+
+// Screenshot 2: 연간 비교
+function drawSS2() {
+  const c = document.getElementById('ss2')
+  const ctx = c.getContext('2d')
+  bg(ctx, 636, 1048)
+  ctx.textAlign = 'center'
+
+  ctx.fillStyle = '#ffffff'
+  ctx.font = 'bold 48px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('이 돈으로 뭘 살 수 있을까?', 318, 120)
+
+  ctx.fillStyle = '#aab4c8'
+  ctx.font = '30px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('819,600원 으로...', 318, 190)
+
+  const items = [
+    { emoji: '☕', text: '카페 라떼 136잔', color: '#c9a96e' },
+    { emoji: '🍗', text: '치킨 37마리', color: '#ff9f43' },
+    { emoji: '🎧', text: '에어팟 1개', color: '#8ecfff' },
+  ]
+
+  items.forEach((item, i) => {
+    const y = 290 + i * 180
+    ctx.fillStyle = '#191f28'
+    roundRect(ctx, 40, y, 556, 140, 20)
+
+    ctx.font = '70px serif'
+    ctx.textAlign = 'left'
+    ctx.fillText(item.emoji, 80, y + 90)
+
+    ctx.fillStyle = item.color
+    ctx.font = 'bold 40px "Apple SD Gothic Neo", sans-serif'
+    ctx.textAlign = 'left'
+    ctx.fillText(item.text, 180, y + 70)
+
+    ctx.fillStyle = '#aab4c8'
+    ctx.font = '28px "Apple SD Gothic Neo", sans-serif'
+    ctx.fillText('구독료를 아끼면 살 수 있어요', 180, y + 110)
+  })
+
+  ctx.textAlign = 'center'
+  ctx.fillStyle = '#ff6b6b'
+  ctx.font = 'bold 36px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('진짜 필요한 구독만 남겨보세요 💪', 318, 960)
+}
+
+// Screenshot 3: 온보딩
+function drawSS3() {
+  const c = document.getElementById('ss3')
+  const ctx = c.getContext('2d')
+  bg(ctx, 636, 1048)
+  ctx.textAlign = 'center'
+
+  ctx.fillStyle = '#ffffff'
+  ctx.font = 'bold 48px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('어떤 구독 쓰고 계세요?', 318, 120)
+
+  ctx.fillStyle = '#aab4c8'
+  ctx.font = '30px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('탭 한 번으로 바로 추가해요', 318, 180)
+
+  const services = [
+    ['넷플릭스 🎬', '유튜브 프리미엄 ▶️'],
+    ['쿠팡 로켓와우 🛍️', 'ChatGPT Plus 🤖'],
+    ['왓챠 🎥', '멜론 🎵'],
+    ['애플 뮤직 🍎', '네이버 플러스 🟢'],
+  ]
+
+  services.forEach((row, ri) => {
+    row.forEach((name, ci) => {
+      const x = 40 + ci * 290
+      const y = 240 + ri * 160
+      ctx.fillStyle = ri === 0 ? '#2a3550' : '#191f28'
+      roundRect(ctx, x, y, 260, 120, 16)
+      if (ri === 0) {
+        ctx.strokeStyle = '#4a6fa5'
+        ctx.lineWidth = 2
+        roundRectStroke(ctx, x, y, 260, 120, 16)
+      }
+      ctx.fillStyle = ri === 0 ? '#8ecfff' : '#ffffff'
+      ctx.font = '26px "Apple SD Gothic Neo", sans-serif'
+      ctx.textAlign = 'center'
+      ctx.fillText(name, x + 130, y + 66)
+    })
+  })
+
+  // CTA Button
+  ctx.fillStyle = '#ff6b6b'
+  roundRect(ctx, 40, 920, 556, 80, 16)
+  ctx.fillStyle = '#ffffff'
+  ctx.font = 'bold 36px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('선택 완료', 318, 970)
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath()
+  ctx.roundRect(x, y, w, h, r)
+  ctx.fill()
+}
+function roundRectStroke(ctx, x, y, w, h, r) {
+  ctx.beginPath()
+  ctx.roundRect(x, y, w, h, r)
+  ctx.stroke()
+}
+
+function drawMiniCard(ctx, x, y, name, amount, badge, badgeColor) {
+  ctx.fillStyle = '#191f28'
+  roundRect(ctx, x, y, 556, 80, 16)
+  ctx.fillStyle = '#ffffff'
+  ctx.font = 'bold 28px "Apple SD Gothic Neo", sans-serif'
+  ctx.textAlign = 'left'
+  ctx.fillText(name, x + 20, y + 48)
+  ctx.fillStyle = '#aab4c8'
+  ctx.font = '24px "Apple SD Gothic Neo", sans-serif'
+  ctx.textAlign = 'right'
+  ctx.fillText(amount, x + 430, y + 48)
+  ctx.fillStyle = badgeColor
+  ctx.font = 'bold 22px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText(badge, x + 536, y + 48)
+}
+
+function dl(id, filename) {
+  const link = document.createElement('a')
+  link.download = filename
+  link.href = document.getElementById(id).toDataURL('image/png')
+  link.click()
+}
+
+drawBanner()
+drawSS1()
+drawSS2()
+drawSS3()
+</script>
+</body>
+</html>
