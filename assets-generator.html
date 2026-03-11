@@ -12,6 +12,12 @@
 <body>
 
 <div class="section">
+  <h2>앱 아이콘 (600×600px) — 앱인토스 제출용</h2>
+  <canvas id="icon" width="600" height="600" style="width:220px;border-radius:28px"></canvas>
+  <button onclick="dl('icon','icon-600x600.png')">아이콘 다운로드</button>
+</div>
+
+<div class="section">
   <h2>가로형 썸네일 (1932×828) — 앱스토어 배너</h2>
   <canvas id="banner" width="1932" height="828" style="width:700px"></canvas>
   <button onclick="dl('banner','thumbnail-1932x828.png')">썸네일 다운로드</button>
@@ -259,6 +265,41 @@ function dl(id, filename) {
   link.click()
 }
 
+// Icon 600x600 — 앱인토스 가이드 준수
+function drawIcon() {
+  const c = document.getElementById('icon')
+  const ctx = c.getContext('2d')
+  const W = 600, H = 600, CX = 300, CY = 300
+
+  // 배경: 브랜드 대표 컬러 (꽉 찬 사각형, 필수)
+  ctx.fillStyle = '#ff6b6b'
+  ctx.fillRect(0, 0, W, H)
+
+  // 원형 그리드 영역 표시용 (실제 출력 안 됨 — 가이드라인 참고용)
+  // 원형 그리드: 반지름 300 원 안에 380px 정방형 콘텐츠
+
+  // 원형 클리핑 내부 어두운 서클 (깊이감)
+  const radGrad = ctx.createRadialGradient(CX, CY - 30, 60, CX, CY, 280)
+  radGrad.addColorStop(0, 'rgba(255,255,255,0.18)')
+  radGrad.addColorStop(1, 'rgba(180,40,40,0.35)')
+  ctx.fillStyle = radGrad
+  ctx.beginPath()
+  ctx.arc(CX, CY, 280, 0, Math.PI * 2)
+  ctx.fill()
+
+  // 이모지 — 원형 그리드 중앙, 380px 이하 크기
+  ctx.font = '280px serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('💸', CX, CY - 20)
+
+  // 앱 이름 (하단, 작게)
+  ctx.fillStyle = 'rgba(255,255,255,0.9)'
+  ctx.font = 'bold 54px "Apple SD Gothic Neo", sans-serif'
+  ctx.fillText('숨만쉬어도', CX, CY + 185)
+}
+
+drawIcon()
 drawBanner()
 drawSS1()
 drawSS2()
