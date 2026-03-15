@@ -1,0 +1,4 @@
+{
+  "buildCommand": "ait build && cp public/terms.html dist/web/terms.html && cp public/privacy.html dist/web/privacy.html",
+  "outputDirectory": "dist/web"
+}
